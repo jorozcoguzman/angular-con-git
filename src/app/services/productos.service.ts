@@ -8,37 +8,69 @@ import { Producto } from '../interfaces/producto.interface';
 export class ProductosService {
 
   cargando_idx = true;
-  cargando_detalle = true;
   urlPrincipal:string = "https://angular-http-1846f.firebaseio.com/";
-  productos_detalle:any[] = [];
   productos_idx:Producto[] = [];
+  productosBuscar:Producto[] = [];
 
 
   constructor( private http:HttpClient) { 
 
-    this.cargarProductos();
-    this.cargarProductosIDX();
-
+      this.cargarProductosIDX();
   }
 
-  private cargarProductos(){
-    this.http.get(this.urlPrincipal + "productos.json")
-                  .subscribe( ( resp:any[] ) => {
-                    console.log(resp);
-                    this.productos_detalle = resp;
-                    this.cargando_detalle = false;
-                  })
+  public cargarProductoDetalle(codProducto:string){
+
+    return this.http.get(this.urlPrincipal + `productos/${codProducto}.json`);
   }
 
   private cargarProductosIDX(){
-    this.http.get(this.urlPrincipal + "productos_idx.json")
-                  .subscribe( ( resp:Producto[] ) => {
-                    console.log(resp);
-                    this.productos_idx = resp;
 
-                    setTimeout(() => {
-                      this.cargando_idx = false;
-                    }, 2000);
-                  })
+    //llamar funcion si      bien   ,  mal
+    return new Promise(  ( resolve, reject ) => {
+
+            this.http.get(this.urlPrincipal + "productos_idx.json")
+                        .subscribe( ( resp:Producto[] ) => {
+                          
+                            this.productos_idx = resp;
+                            this.cargando_idx = false;
+                            resolve();
+                        })
+    });
+  }
+
+  public buscarProductos( termino:string ){
+
+      if(this.productos_idx.length === 0){
+
+        this.cargarProductosIDX().then( () => {
+                    this.cargaFiltro( termino );
+                  });
+      }else{
+
+          this.cargaFiltro( termino );
+      }
+  }
+
+
+  public cargaFiltro( termino:string ){
+
+      /*
+      this.productosBuscar = this.productos_idx.filter( producto => {
+        return true;
+      })
+      */
+
+      this.productosBuscar = [];
+
+      termino = termino.toLocaleLowerCase();
+
+      this.productos_idx.forEach( prod => {
+
+          if( prod.categoria.toLocaleLowerCase().indexOf( termino ) > -1 || 
+              prod.titulo.toLocaleLowerCase().indexOf( termino ) > -1 ){
+
+              this.productosBuscar.push( prod );
+          }
+      });
   }
 }
