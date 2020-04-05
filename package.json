@@ -22,7 +22,8 @@
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
-    "acorn": ">=6.4.1"
+    "acorn": ">=6.4.1",
+    "minimist": ">=1.2.3"
   }
   },
   "devDependencies": {
