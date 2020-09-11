@@ -23,8 +23,7 @@
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1",
     "acorn": ">=6.4.1",
-    "minimist": ">=1.2.3",
-    "handlebars": ">=4.5.3"
+    "minimist": ">=1.2.3"
   }
   },
   "devDependencies": {
@@ -46,7 +45,6 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.5.3",
-    "handlebars": ">=4.5.3"
+    "typescript": "~3.5.3"
   }
 }
